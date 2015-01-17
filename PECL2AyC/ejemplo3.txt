@@ -1,0 +1,15 @@
+// Datos del Ejemplo
+5
+3
+10
+// Valores de las pistas
+1
+2
+2
+2
+3
+3
+3
+4
+4
+6

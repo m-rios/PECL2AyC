@@ -46,3 +46,13 @@ DerivedData
 *.exe
 *.out
 *.app
+
+*.pbxproj
+
+*.xcworkspacedata
+
+*.xcbkptlist
+
+*.xcscheme
+
+*.plist
