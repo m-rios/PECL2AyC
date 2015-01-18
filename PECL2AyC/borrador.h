@@ -12,11 +12,12 @@
 #include <stdio.h>
 #include <vector>
 #include <iostream>
+#include "casilla.h"
 using namespace std;
 
-void algoritmo(vector<vector<int>> &tab, vector<int> pistas, vector<int> &sol, int rest);
-bool sol_valida(vector<vector<int>> input);
-void print(vector<vector<int>> input);
+void algoritmo(vector<vector<casilla>> &tab, vector<int> pistas, vector<int> &sol, int rest);
+bool sol_valida(vector<vector<casilla>> input);
+void print(vector<vector<casilla>> input);
 void test(vector<int> &v);
-bool handle_sol(vector<vector<int>> tab, vector<int> &sol);
+bool handle_sol(vector<vector<casilla>> tab, vector<int> &sol);
 #endif /* defined(__PECL2AyC__borrador__) */

@@ -25,11 +25,12 @@ public:
     int valor;
     casilla(int f, int c);
     casilla();
-    casilla(int f, int c, vector<vector<casilla>> input);
     int get_adj();
     void set_value(int n);
     void init_vecinos(vector<vector<casilla>> input);
     void print_vecinos();
+    void update();
+    void calc_adj();
 };
 
 #endif /* defined(__PECL2AyC__casilla__) */

@@ -24,36 +24,6 @@ casilla::casilla()
 
 void casilla::init_vecinos(vector<vector<casilla>> input)
 {
-    /*
-     int v = 0;
-     for (int i = -1; i < 2; i++) {
-     for (int j = -1; j < 2; j++) {
-     if (!(i==0) && !(j==0)) {
-     vecinos[v] = NULL;
-     if ((c+j >= 0) && (c+j < input[f+i].size()) && (f+i >= 0) && (f+i < input.size())) {
-     vecinos[v] = & input[f+i][c+j];
-     }
-     v++;
-     }
-     else if(!(i==0)){
-     vecinos[v] = NULL;
-     if ((f+i >= 0) && (f+i < input.size())) {
-     vecinos[v] = & input[f+i][c+j];
-     }
-     v++;
-     }
-     else if (!(j==0)) {
-     vecinos[v] = NULL;
-     if ((c+j >= 0) && (c+j < input[f+i].size())) {
-     vecinos[v] = & input[f+i][c+j];
-     }
-     v++;
-     }
-     }
-     }
-     */
-    
-    
     if ((f-1 > -1) &&(c-1 > -1)) {
         vecinos[0] =  & input[f-1][c-1];
     }
@@ -73,32 +43,10 @@ void casilla::init_vecinos(vector<vector<casilla>> input)
         vecinos[5] =  & input[f+1][c-1];
     }
     if (f+1<input[f].size()) {
-        int n = input[f+1][c].valor;
         vecinos[6] =  & input[f+1][c];
     }
     if ((f+1<input[f].size())&&(c+1<input[f].size())) {
         vecinos[7] =  & input[f+1][c+1];
-    }
-}
-
-casilla::casilla(int f, int c, vector<vector<casilla>> input)
-{
-    valor = 0;
-    adj = 0;
-    this->f = f;
-    this->c = c;
-    vecinos.resize(8);
-    int v = 0;
-    for (int i = -1; i < 2; i++) {
-        for (int j = -1; j < 2; j++) {
-            if (!((i==0) && (j==0)) ) {
-                vecinos[v] = NULL;
-                if ((c+j > 0) && (c+j <= input[i].size()) && (f+i > 0) && (f+i <= input.size())) {
-                    vecinos[v] = & input[i][j];
-                }
-                v++;
-            }
-        }
     }
 }
 
@@ -117,4 +65,38 @@ void casilla::print_vecinos()
         }
     }
     cout << endl;
+}
+void casilla::update()
+{
+    for (int i = 0; i < 8; i++) {
+        if (vecinos[i]!=NULL) {
+            vecinos[i]->calc_adj();
+        }
+    }
+}
+
+void casilla::calc_adj()
+{
+    adj = 0;
+    for (int i = 0; i < 8; i++) {
+        if (vecinos[i]!=NULL) {
+            if (vecinos[i]->valor > 0) {
+                adj++;
+            }
+        }
+    }
+    if (adj == valor) {
+        for (int i = 0; i < 8; i++) {
+            if (vecinos[i]!=NULL) {
+                if (vecinos[i]->valor == 0) {
+                    vecinos[i]->valor = -1;
+                }
+            }
+        }
+    }
+}
+
+int casilla::get_adj()
+{
+    return this->adj;
 }

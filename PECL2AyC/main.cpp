@@ -21,25 +21,20 @@ int main(int argc, const char * argv[]) {
     //crear e inicializar tablero
     vector<vector<casilla>> tab;
     tab.resize(tablero.M);
-    int c = 0;
     for (int i = 0; i < tablero.M; i++) {
         tab[i].resize(tablero.N);
         for (int j = 0; j < tablero.N; j++) {
             tab[i][j] = casilla(i, j);
-            tab[i][j].set_value(c);
-            c++;
+            tab[i][j].valor = 0;
         }
     }
-    cout << "vecinos: " << endl;
+    //inicializar vecinos
     for (int i = 0; i < tablero.M; i++) {
         for (int j = 0; j < tablero.N; j++) {
             tab[i][j].init_vecinos(tab);
-            tab[i][j].print_vecinos();
         }
     }
-    
-    cout << "hola" << endl;
-    /*
+
     vector<int> sol;
     algoritmo(tab, tablero.pistas, sol, tablero.K);
     cout << "claves:" << endl;
@@ -47,7 +42,7 @@ int main(int argc, const char * argv[]) {
         cout << sol[i] << endl;
     }
     cout << "codigo: " << sol.size() << endl;
-    */
+    
     return 0;
 }
 

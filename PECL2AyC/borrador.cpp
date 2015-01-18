@@ -8,7 +8,7 @@
 
 #include "borrador.h"
 
-void algoritmo(vector<vector<int>> &tab, vector<int> pistas, vector<int> &sol, int rest)
+void algoritmo(vector<vector<casilla>> &tab, vector<int> pistas, vector<int> &sol, int rest)
 {
     if (rest == 0) {
         if (sol_valida(tab)) {
@@ -19,63 +19,38 @@ void algoritmo(vector<vector<int>> &tab, vector<int> pistas, vector<int> &sol, i
     }else{
         for (int f = 0; f < tab.size(); f++) {
             for (int c = 0; c < tab[f].size(); c++) {
-                if (tab[f][c] == 0) {
-                    tab[f][c] = pistas[pistas.size()-rest];
+                if (tab[f][c].valor == 0) {
+                    tab[f][c].valor = pistas[pistas.size()-rest];
+                    tab[f][c].update();
                     rest--;
                     algoritmo(tab, pistas, sol, rest);
                     rest++;
-                    tab[f][c] = 0;
+                    tab[f][c].valor = 0;
                 }
             }
         }
     }
 }
 
-bool sol_valida(vector<vector<int>> input)
+bool sol_valida(vector<vector<casilla>> input)
 {
-    int adj;
     for (int i = 0; i < input.size(); i++) {
         for (int j = 0; j < input[i].size(); j++) {
-            if (input[i][j] != 0) {
-                adj = 0;
-                if ((i-1 > -1) &&(j-1 > -1) && input[i-1][j-1] > 0) {
-                    adj++;
-                }
-                if ((i-1 > -1) && (input[i-1][j]) > 0) {
-                    adj++;
-                }
-                if ((i-1 > -1)&&(j+1 < input[i].size())&&(input[i-1][j+1] > 0)) {
-                    adj++;
-                }
-                if ((j-1 > -1)&&(input[i][j-1] > 0)) {
-                    adj++;
-                }
-                if ((j+1 < input[i].size())&&(input[i][j+1] > 0)) {
-                    adj++;
-                }
-                if ((i+1 < input[i].size())&&(j-1>-1)&&(input[i+1][j-1]>0)) {
-                    adj++;
-                }
-                if ((i+1<input[i].size())&&(input[i+1][j]>0)) {
-                    adj++;
-                }
-                if ((i+1<input[i].size())&&(j+1<input[i].size())&&(input[i+1][j+1]>0)) {
-                    adj++;
-                }
-                if (adj != input[i][j])
+            if (input[i][j].valor != 0) {
+                if (input[i][j].get_adj() != input[i][j].valor) {
                     return false;
-
+                }
             }
         }
     }
     return true;
 }
 
-void print(vector<vector<int>> input)
+void print(vector<vector<casilla>> input)
 {
     for (int i = 0; i < input.size(); i++) {
         for (int j = 0; j < input[i].size(); j++) {
-            cout << input[i][j];
+            cout << input[i][j].valor;
         }
         cout << endl;
     }
@@ -87,13 +62,13 @@ void test(vector<int> &v)
     v[2] = -1;
 }
 
-bool handle_sol(vector<vector<int>> tab, vector<int> &sol)
+bool handle_sol(vector<vector<casilla>> tab, vector<int> &sol)
 {
     int clave = 0;
     for (int i = 0; i < tab.size(); i++) {
         for (int j = 0; j < tab[i].size(); j++) {
-            if (tab[i][j] > 0) {
-                clave = clave*10+tab[i][j];
+            if (tab[i][j].valor > 0) {
+                clave = clave*10+tab[i][j].valor;
             }
         }
     }
