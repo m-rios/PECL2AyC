@@ -10,6 +10,7 @@
 #include "borrador.h"
 #include "file_parser.h"
 #include "tablero.h"
+#include "casilla.h"
 
 int main(int argc, const char * argv[]) {
 
@@ -18,15 +19,27 @@ int main(int argc, const char * argv[]) {
     Tablero tablero = parser.get_tablero();
     
     //crear e inicializar tablero
-    vector<vector<int>> tab;
+    vector<vector<casilla>> tab;
     tab.resize(tablero.M);
+    int c = 0;
     for (int i = 0; i < tablero.M; i++) {
         tab[i].resize(tablero.N);
         for (int j = 0; j < tablero.N; j++) {
-            tab[i][j] = 0;
+            tab[i][j] = casilla(i, j);
+            tab[i][j].set_value(c);
+            c++;
+        }
+    }
+    cout << "vecinos: " << endl;
+    for (int i = 0; i < tablero.M; i++) {
+        for (int j = 0; j < tablero.N; j++) {
+            tab[i][j].init_vecinos(tab);
+            tab[i][j].print_vecinos();
         }
     }
     
+    cout << "hola" << endl;
+    /*
     vector<int> sol;
     algoritmo(tab, tablero.pistas, sol, tablero.K);
     cout << "claves:" << endl;
@@ -34,6 +47,7 @@ int main(int argc, const char * argv[]) {
         cout << sol[i] << endl;
     }
     cout << "codigo: " << sol.size() << endl;
+    */
     return 0;
 }
 
