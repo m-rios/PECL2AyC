@@ -16,13 +16,15 @@ using namespace std;
 
 class casilla {
 
+    
+    
+    
+public:
     int adj;
+    int valor;
     int f, c;
     //vecinos
     vector<casilla *> vecinos;
-    
-public:
-    int valor;
     casilla(int f, int c);
     casilla();
     int get_adj();
@@ -30,7 +32,7 @@ public:
     void init_vecinos(vector<vector<casilla>> input);
     void print_vecinos();
     void update();
-    void calc_adj();
+    void calc_adj(casilla * vecino);
 };
 
 #endif /* defined(__PECL2AyC__casilla__) */

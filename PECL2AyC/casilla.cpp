@@ -70,30 +70,32 @@ void casilla::update()
 {
     for (int i = 0; i < 8; i++) {
         if (vecinos[i]!=NULL) {
-            vecinos[i]->calc_adj();
+            calc_adj(vecinos[i]);
         }
     }
 }
 
-void casilla::calc_adj()
+void casilla::calc_adj(casilla * vecino)
 {
-    adj = 0;
+    vecino->adj = 0;
     for (int i = 0; i < 8; i++) {
-        if (vecinos[i]!=NULL) {
-            if (vecinos[i]->valor > 0) {
-                adj++;
+        if (vecino != NULL) {
+            if (vecino->valor > 0) {
+                vecino->adj++;
             }
         }
     }
-    if (adj == valor) {
+    /*
+    if (vecino->adj == vecino->valor) {
         for (int i = 0; i < 8; i++) {
-            if (vecinos[i]!=NULL) {
-                if (vecinos[i]->valor == 0) {
-                    vecinos[i]->valor = -1;
+            if (vecino->vecinos[i]!=NULL) {
+                if (vecino->vecinos[i]->valor == 0) {
+                    vecino->vecinos[i]->valor = -1;
                 }
             }
         }
     }
+    */
 }
 
 int casilla::get_adj()
