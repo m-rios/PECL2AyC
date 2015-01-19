@@ -13,9 +13,10 @@
 #include <vector>
 #include <iostream>
 #include "casilla.h"
+#include <map>
 using namespace std;
 
-void algoritmo(vector<vector<casilla>> &tab, vector<int> pistas, vector<int> &sol,vector<vecino> &vecinos, int rest);
+void algoritmo(vector<vector<casilla>> &tab, vector<int> pistas, vector<int> &sol, map<int, int> & sol_par,vector<vecino> &vecinos, int rest);
 bool sol_valida(vector<vector<casilla>> input);
 void print(vector<vector<casilla>> input);
 void test(vector<int> &v);
@@ -24,6 +25,8 @@ void update_adj(vector<vector<casilla>> & tab, vector<vecino> &vecinos);
 void update_legal(vector<vector<casilla>> & tab, vector<vecino> &vecinos);
 bool stop(vector<vector<casilla>> input);
 void undo_legal(vector<vector<casilla>> & tab, vector<vecino> &vecinos);
+void undo_adj(vector<vector<casilla>> & tab, vector<vecino> &vecinos, int i, int j);
+int get_estado(vector<vector<casilla>> tab);
 
 
 #endif /* defined(__PECL2AyC__borrador__) */

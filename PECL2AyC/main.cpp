@@ -41,7 +41,8 @@ int main(int argc, const char * argv[]) {
     vecinos[7].inc_f = +1;  vecinos[7].inc_c = +1;
     
     vector<int> sol;
-    algoritmo(tab, tablero.pistas, sol, vecinos, tablero.K);
+    map<int, int> sol_par;
+    algoritmo(tab, tablero.pistas, sol, sol_par, vecinos, tablero.K);
     cout << "claves:" << endl;
     for (int i = 0; i < sol.size(); i++) {
         cout << sol[i] << endl;
