@@ -24,19 +24,24 @@ int main(int argc, const char * argv[]) {
     for (int i = 0; i < tablero.M; i++) {
         tab[i].resize(tablero.N);
         for (int j = 0; j < tablero.N; j++) {
-            tab[i][j] = casilla(i, j);
             tab[i][j].valor = 0;
         }
     }
-    //inicializar vecinos
-    for (int i = 0; i < tablero.M; i++) {
-        for (int j = 0; j < tablero.N; j++) {
-            tab[i][j].init_vecinos(tab);
-        }
-    }
-
+    
+    //crear vector de vecinos
+    vector<vecino> vecinos;
+    vecinos.resize(8);
+    vecinos[0].inc_f = -1;  vecinos[0].inc_c = -1;
+    vecinos[1].inc_f = -1;  vecinos[1].inc_c =  0;
+    vecinos[2].inc_f = -1;  vecinos[2].inc_c = +1;
+    vecinos[3].inc_f =  0;  vecinos[3].inc_c = -1;
+    vecinos[4].inc_f =  0;  vecinos[4].inc_c = +1;
+    vecinos[5].inc_f = +1;  vecinos[5].inc_c = -1;
+    vecinos[6].inc_f = +1;  vecinos[6].inc_c =  0;
+    vecinos[7].inc_f = +1;  vecinos[7].inc_c = +1;
+    
     vector<int> sol;
-    algoritmo(tab, tablero.pistas, sol, tablero.K);
+    algoritmo(tab, tablero.pistas, sol, vecinos, tablero.K);
     cout << "claves:" << endl;
     for (int i = 0; i < sol.size(); i++) {
         cout << sol[i] << endl;

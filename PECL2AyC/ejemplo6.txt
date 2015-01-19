@@ -1,0 +1,12 @@
+// Datos del Ejemplo 6. Hay 104 soluciones posibles
+5
+5
+7
+// Valores de las pistas
+1
+1
+1
+2
+2
+2
+3

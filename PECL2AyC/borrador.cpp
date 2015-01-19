@@ -8,24 +8,94 @@
 
 #include "borrador.h"
 
-void algoritmo(vector<vector<casilla>> &tab, vector<int> pistas, vector<int> &sol, int rest)
+void algoritmo(vector<vector<casilla>> &tab, vector<int> pistas, vector<int> &sol,vector<vecino> &vecinos, int rest)
 {
     if (rest == 0) {
+        if (tab[1][2].valor == 2) {
+            int m = 0;
+        }
         if (sol_valida(tab)) {
-            if (handle_sol(tab,sol)) {
+            int nsol = handle_sol(tab, sol);
+            if (nsol > 0) {
                 print(tab);
+                cout << nsol << " soluciones encontradas" << endl;
             }
         }
     }else{
         for (int f = 0; f < tab.size(); f++) {
             for (int c = 0; c < tab[f].size(); c++) {
+                if ((tab[0][0].valor == 1) && (tab[0][2].valor == 2) && (pistas.size()-rest == 2) && (f == 1) && (c==2)) {
+                    int h = 0;
+                }
                 if (tab[f][c].valor == 0) {
                     tab[f][c].valor = pistas[pistas.size()-rest];
-                    tab[f][c].update();
+                    update_adj(tab, vecinos);
+                    //update_legal(tab, vecinos);
                     rest--;
-                    algoritmo(tab, pistas, sol, rest);
+                    algoritmo(tab, pistas, sol, vecinos, rest);
                     rest++;
                     tab[f][c].valor = 0;
+                    //update_adj(tab, vecinos);
+                    //undo_legal(tab, vecinos);
+                }
+            }
+        }
+    }
+}
+
+bool stop(vector<vector<casilla>> input)
+{
+    return (input[0][0].valor == 1) && (input[0][1].valor == 3) && (input[0][2].valor == 2) && (input[1][2].valor == 2);
+}
+
+void update_adj(vector<vector<casilla>> & tab, vector<vecino> &vecinos)
+{
+    for (int i = 0; i < tab.size(); i++) {
+        for (int j = 0; j < tab[i].size(); j++) {
+            tab[i][j].adj = 0;
+            for (int v = 0; v < 8; v++) {
+                if ((vecinos[v].inc_f+i >= 0) && (vecinos[v].inc_f+i < tab.size()) && (vecinos[v].inc_c+j>=0) && (vecinos[v].inc_c+j<tab[i].size())) {
+                    if (tab[i+vecinos[v].inc_f][j+vecinos[v].inc_c].valor > 0) {
+                        tab[i][j].adj++;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void update_legal(vector<vector<casilla>> & tab, vector<vecino> &vecinos)
+{
+    for (int i = 0; i < tab.size(); i++) {
+        for (int j = 0; j < tab[i].size(); j++) {
+            if (tab[i][j].valor > 0) {
+                if (tab[i][j].adj == tab[i][j].valor) {
+                    for (int v = 0; v < 8; v++) {
+                        if ((vecinos[v].inc_f+i >= 0) && (vecinos[v].inc_f+i < tab.size()) && (vecinos[v].inc_c+j>=0) && (vecinos[v].inc_c+j<tab[i].size())) {
+                            if (tab[i+vecinos[v].inc_f][j+vecinos[v].inc_c].valor == 0) {
+                                tab[i+vecinos[v].inc_f][j+vecinos[v].inc_c].valor = -1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void undo_legal(vector<vector<casilla>> & tab, vector<vecino> &vecinos)
+{
+    for (int i = 0; i < tab.size(); i++) {
+        for (int j = 0; j < tab[i].size(); j++) {
+            if (tab[i][j].valor >= 0) {
+                if (tab[i][j].adj == tab[i][j].valor) {
+                    for (int v = 0; v < 8; v++) {
+                        if ((vecinos[v].inc_f+i >= 0) && (vecinos[v].inc_f+i < tab.size()) && (vecinos[v].inc_c+j>=0) && (vecinos[v].inc_c+j<tab[i].size())) {
+                            if (tab[i+vecinos[v].inc_f][j+vecinos[v].inc_c].valor == 0) {
+                                tab[i+vecinos[v].inc_f][j+vecinos[v].inc_c].valor = -1;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -37,7 +107,7 @@ bool sol_valida(vector<vector<casilla>> input)
     for (int i = 0; i < input.size(); i++) {
         for (int j = 0; j < input[i].size(); j++) {
             if (input[i][j].valor != 0) {
-                if (input[i][j].get_adj() != input[i][j].valor) {
+                if (input[i][j].adj != input[i][j].valor) {
                     return false;
                 }
             }
@@ -62,7 +132,7 @@ void test(vector<int> &v)
     v[2] = -1;
 }
 
-bool handle_sol(vector<vector<casilla>> tab, vector<int> &sol)
+int handle_sol(vector<vector<casilla>> tab, vector<int> &sol)
 {
     int clave = 0;
     for (int i = 0; i < tab.size(); i++) {
@@ -73,8 +143,8 @@ bool handle_sol(vector<vector<casilla>> tab, vector<int> &sol)
         }
     }
     if (find(sol.begin(), sol.end(), clave) != sol.end()) {
-        return false;
+        return 0;
     }
     sol.push_back(clave);
-    return true;
+    return (int) sol.size();
 }

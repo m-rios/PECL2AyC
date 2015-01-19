@@ -1,0 +1,14 @@
+// Datos del Ejemplo 8. Hay 702 soluciones posibles
+5
+5
+9
+// Valores de las pistas
+1
+1
+2
+2
+2
+3
+3
+3
+3

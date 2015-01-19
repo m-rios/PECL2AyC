@@ -1,0 +1,15 @@
+// Datos del Ejemplo 7. Hay 0 soluciones posibles
+5
+5
+10
+// Valores de las pistas
+1
+1
+2
+2
+2
+3
+3
+3
+3
+3
