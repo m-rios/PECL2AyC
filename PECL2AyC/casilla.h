@@ -13,9 +13,8 @@
 using namespace std;
 
 struct casilla {
-    int adj;
     int valor;
-    int f, c;
+    int adj;
 };
 
 struct vecino {

@@ -22,12 +22,12 @@ void algoritmo(vector<vector<casilla>> &tab, vector<int> pistas, vector<int> &so
         for (int f = 0; f < tab.size(); f++) {
             for (int c = 0; c < tab[f].size(); c++) {
                 if (tab[f][c].valor == 0) {
-                    //
+                    vector<vector<casilla>> aux (tab);
                     tab[f][c].valor = pistas[pistas.size()-rest];
                     //si no es solucion repetida
                     if (sol_par.find(get_estado(tab)) == sol_par.end()) {
                         update_adj(tab, vecinos);
-                        //update_legal(tab, vecinos);
+                        update_legal(tab, vecinos);
                         rest--;
                         algoritmo(tab, pistas, sol, sol_par, vecinos, rest);
                         rest++;
@@ -35,13 +35,22 @@ void algoritmo(vector<vector<casilla>> &tab, vector<int> pistas, vector<int> &so
                         //undo_adj(tab, vecinos, f, c);
                         //undo_legal(tab, vecinos);
                     }
-                    tab[f][c].valor = 0;
+                    my_copy(tab, aux);
+                    //tab[f][c].valor = 0;
                 }
             }
         }
     }
 }
 
+void my_copy(vector<vector<casilla>> &destination, vector<vector<casilla>> source)
+{
+    for (int i = 0; i < source.size(); i++) {
+        for (int j = 0; j < source[i].size(); j++) {
+            destination[i][j] = source[i][j];
+        }
+    }
+}
 int get_estado(vector<vector<casilla>> tab)
 {
     int estado = 0;
@@ -51,11 +60,6 @@ int get_estado(vector<vector<casilla>> tab)
         }
     }
     return estado;
-}
-
-bool stop(vector<vector<casilla>> input)
-{
-    return (input[0][0].valor == 1) && (input[0][1].valor == 3) && (input[0][2].valor == 2) && (input[1][2].valor == 2);
 }
 
 void update_adj(vector<vector<casilla>> & tab, vector<vecino> &vecinos)
@@ -96,7 +100,7 @@ void undo_adj(vector<vector<casilla>> & tab, vector<vecino> &vecinos, int i, int
 {
     for (int v = 0; v < 8; v++) {
         if ((vecinos[v].inc_f+i >= 0) && (vecinos[v].inc_f+i < tab.size()) && (vecinos[v].inc_c+j>=0) && (vecinos[v].inc_c+j<tab[i].size())) {
-            if (tab[i+vecinos[v].inc_f][j+vecinos[v].inc_c].valor > 0) {
+            if (tab[i+vecinos[v].inc_f][j+vecinos[v].inc_c].adj > 0) {
                 tab[i+vecinos[v].inc_f][j+vecinos[v].inc_c].adj--;
             }
         }
@@ -107,7 +111,7 @@ void undo_legal(vector<vector<casilla>> & tab, vector<vecino> &vecinos)
 {
     for (int i = 0; i < tab.size(); i++) {
         for (int j = 0; j < tab[i].size(); j++) {
-            if (tab[i][j].valor > 0) {
+            if (tab[i][j].valor > -1) {
                 if (tab[i][j].adj < tab[i][j].valor) {
                     for (int v = 0; v < 8; v++) {
                         if ((vecinos[v].inc_f+i >= 0) && (vecinos[v].inc_f+i < tab.size()) && (vecinos[v].inc_c+j>=0) && (vecinos[v].inc_c+j<tab[i].size())) {
@@ -126,7 +130,7 @@ bool sol_valida(vector<vector<casilla>> input)
 {
     for (int i = 0; i < input.size(); i++) {
         for (int j = 0; j < input[i].size(); j++) {
-            if (input[i][j].valor != 0) {
+            if (input[i][j].valor > 0) {
                 if (input[i][j].adj != input[i][j].valor) {
                     return false;
                 }
@@ -145,11 +149,6 @@ void print(vector<vector<casilla>> input)
         cout << endl;
     }
     cout << "___" << endl;
-}
-
-void test(vector<int> &v)
-{
-    v[2] = -1;
 }
 
 int handle_sol(vector<vector<casilla>> tab, vector<int> &sol)
