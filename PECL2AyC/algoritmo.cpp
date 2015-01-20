@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Mario. All rights reserved.
 //
 
-#include "borrador.h"
+#include "algoritmo.h"
 
 void algoritmo(vector<vector<casilla>> &tab, vector<int> pistas, map<unsigned long long, int> &sol, map<int, int> & sol_par, vector<vecino> &vecinos, int rest)
 {

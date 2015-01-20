@@ -7,7 +7,7 @@
 //
 
 #include <iostream>
-#include "borrador.h"
+#include "algoritmo.h"
 #include "file_parser.h"
 #include "tablero.h"
 #include "casilla.h"
