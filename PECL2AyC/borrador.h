@@ -16,14 +16,12 @@
 #include <map>
 using namespace std;
 
-void algoritmo(vector<vector<casilla>> &tab, vector<int> pistas, vector<int> &sol, map<int, int> & sol_par,vector<vecino> &vecinos, int rest);
+void algoritmo(vector<vector<casilla>> &tab, vector<int> pistas, map<unsigned long long,int> &sol, map<int, int> & sol_par,vector<vecino> &vecinos, int rest);
 bool sol_valida(vector<vector<casilla>> input);
 void print(vector<vector<casilla>> input);
-int handle_sol(vector<vector<casilla>> tab, vector<int> &sol);
+int handle_sol(vector<vector<casilla>> &tab, map<unsigned long long,int> &sol);
 void update_adj(vector<vector<casilla>> & tab, vector<vecino> &vecinos);
 void update_legal(vector<vector<casilla>> & tab, vector<vecino> &vecinos);
-void undo_legal(vector<vector<casilla>> & tab, vector<vecino> &vecinos);
-void undo_adj(vector<vector<casilla>> & tab, vector<vecino> &vecinos, int i, int j);
 int get_estado(vector<vector<casilla>> tab);
 void my_copy(vector<vector<casilla>> &destination, vector<vector<casilla>> source);
 

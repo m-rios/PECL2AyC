@@ -8,7 +8,7 @@
 
 #include "borrador.h"
 
-void algoritmo(vector<vector<casilla>> &tab, vector<int> pistas, vector<int> &sol, map<int, int> & sol_par, vector<vecino> &vecinos, int rest)
+void algoritmo(vector<vector<casilla>> &tab, vector<int> pistas, map<unsigned long long, int> &sol, map<int, int> & sol_par, vector<vecino> &vecinos, int rest)
 {
     if (rest == 0) {
         if (sol_valida(tab)) {
@@ -32,11 +32,8 @@ void algoritmo(vector<vector<casilla>> &tab, vector<int> pistas, vector<int> &so
                         algoritmo(tab, pistas, sol, sol_par, vecinos, rest);
                         rest++;
                         sol_par.insert(pair<int, int>(get_estado(tab),0));
-                        //undo_adj(tab, vecinos, f, c);
-                        //undo_legal(tab, vecinos);
                     }
                     my_copy(tab, aux);
-                    //tab[f][c].valor = 0;
                 }
             }
         }
@@ -96,35 +93,6 @@ void update_legal(vector<vector<casilla>> & tab, vector<vecino> &vecinos)
         }
     }
 }
-void undo_adj(vector<vector<casilla>> & tab, vector<vecino> &vecinos, int i, int j)
-{
-    for (int v = 0; v < 8; v++) {
-        if ((vecinos[v].inc_f+i >= 0) && (vecinos[v].inc_f+i < tab.size()) && (vecinos[v].inc_c+j>=0) && (vecinos[v].inc_c+j<tab[i].size())) {
-            if (tab[i+vecinos[v].inc_f][j+vecinos[v].inc_c].adj > 0) {
-                tab[i+vecinos[v].inc_f][j+vecinos[v].inc_c].adj--;
-            }
-        }
-    }
-}
-
-void undo_legal(vector<vector<casilla>> & tab, vector<vecino> &vecinos)
-{
-    for (int i = 0; i < tab.size(); i++) {
-        for (int j = 0; j < tab[i].size(); j++) {
-            if (tab[i][j].valor > -1) {
-                if (tab[i][j].adj < tab[i][j].valor) {
-                    for (int v = 0; v < 8; v++) {
-                        if ((vecinos[v].inc_f+i >= 0) && (vecinos[v].inc_f+i < tab.size()) && (vecinos[v].inc_c+j>=0) && (vecinos[v].inc_c+j<tab[i].size())) {
-                            if (tab[i+vecinos[v].inc_f][j+vecinos[v].inc_c].valor < 0 ) {
-                                tab[i+vecinos[v].inc_f][j+vecinos[v].inc_c].valor = 0;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
 
 bool sol_valida(vector<vector<casilla>> input)
 {
@@ -144,16 +112,20 @@ void print(vector<vector<casilla>> input)
 {
     for (int i = 0; i < input.size(); i++) {
         for (int j = 0; j < input[i].size(); j++) {
-            cout << input[i][j].valor;
+            if (input[i][j].valor == -1) {
+                cout << "0";
+            }else{
+                cout << input[i][j].valor;
+            }
         }
         cout << endl;
     }
     cout << "___" << endl;
 }
 
-int handle_sol(vector<vector<casilla>> tab, vector<int> &sol)
+int handle_sol(vector<vector<casilla>> &tab, map<unsigned long long,int> &sol)
 {
-    int clave = 0;
+    unsigned long long clave = 0;
     for (int i = 0; i < tab.size(); i++) {
         for (int j = 0; j < tab[i].size(); j++) {
             if (tab[i][j].valor > 0) {
@@ -161,9 +133,9 @@ int handle_sol(vector<vector<casilla>> tab, vector<int> &sol)
             }
         }
     }
-    if (find(sol.begin(), sol.end(), clave) != sol.end()) {
+    if (sol.find(clave) != sol.end()) {
         return 0;
     }
-    sol.push_back(clave);
+    sol.insert(pair<unsigned long long,int>(clave, 0));
     return (int) sol.size();
 }

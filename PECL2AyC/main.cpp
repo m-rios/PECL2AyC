@@ -40,29 +40,15 @@ int main(int argc, const char * argv[]) {
     vecinos[6].inc_f = +1;  vecinos[6].inc_c =  0;
     vecinos[7].inc_f = +1;  vecinos[7].inc_c = +1;
     
-    //pruebas
-    /*
-    tab[0][0].valor = 1;
-    update_adj(tab, vecinos);
-    update_legal(tab, vecinos);
-    tab[0][1].valor = 2;
-    update_adj(tab, vecinos);
-    update_legal(tab, vecinos);
-    tab[0][1].valor = 0;
-    undo_adj(tab, vecinos, 0, 1);
-    undo_legal(tab, vecinos);
-    */
-     //fin pruebas
-    
-    vector<int> sol;
+    map<unsigned long long,int> sol;
     map<int, int> sol_par;
     algoritmo(tab, tablero.pistas, sol, sol_par, vecinos, tablero.K);
     cout << "claves:" << endl;
-    for (int i = 0; i < sol.size(); i++) {
-        cout << sol[i] << endl;
+    for(auto it = sol.cbegin(); it != sol.cend(); ++it)
+    {
+        cout << it->first << endl;
     }
     cout << "codigo: " << sol.size() << endl;
     
     return 0;
 }
-
